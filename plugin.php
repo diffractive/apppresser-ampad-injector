@@ -17,9 +17,9 @@ function str_replace_n_after($search, $replace, $subject, $occurrence) {
 
 /* Inject HTML into Posts. */
 function insert_html_in_app_posts ( $content ) {	
-	// only insert html if it is a wp json request, and it's not serving pages
+	// only insert html if it is a wp json request for posts, note that we tried wp_is_json_request() but didn't work in the app (worked in preview)
 	// currently amp-ad tags are either wiped or not served in the app content for unknown reasons
-	if (wp_is_json_request() && strpos( $_SERVER['REQUEST_URI'], 'wp/v2/pages') === FALSE) {
+	if (strpos( $_SERVER['REQUEST_URI'], '/wp-json/wp/v2/posts') === 0) {
 		return str_replace_n_after("</p>", get_option('html-content', ""), $content, (int)get_option('insert-after-paragraph-num', 3));
 	} else {
 		return $content;
