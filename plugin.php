@@ -20,7 +20,11 @@ function insert_html_in_app_posts ( $content ) {
 	// only insert html if it is a wp json request for posts, note that we tried wp_is_json_request() but didn't work in the app (worked in preview)
 	// currently amp-ad tags are either wiped or not served in the app content for unknown reasons
 	if (strpos( $_SERVER['REQUEST_URI'], '/wp-json/wp/v2/posts') === 0) {
-		return str_replace_n_after("</p>", get_option('html-content', ""), $content, (int)get_option('insert-after-paragraph-num', 3));
+		// insert first block
+		$content = str_replace_n_after("</p>", get_option('html-content-1', ""), $content, (int)get_option('insert-after-paragraph-num-1', 3));
+		// insert second block
+		$content = str_replace_n_after("</p>", get_option('html-content-2', ""), $content, (int)get_option('insert-after-paragraph-num-2', 8));
+		return $content;
 	} else {
 		return $content;
 	}
@@ -45,8 +49,11 @@ function register_apppresser_html_inserter_option_page() {
 	add_action( 'admin_init', 'register_apppresser_html_inserter_settings' );
 }
 function register_apppresser_html_inserter_settings() {
-	register_setting('appp-html-inserter-group', 'html-content');
-	register_setting('appp-html-inserter-group', 'insert-after-paragraph-num');
+	register_setting('appp-html-inserter-group', 'html-content-1');
+	register_setting('appp-html-inserter-group', 'insert-after-paragraph-num-1');
+
+	register_setting('appp-html-inserter-group', 'html-content-2');
+	register_setting('appp-html-inserter-group', 'insert-after-paragraph-num-2');
 }
 function apppresser_html_inserter_options_page() {
 ?>
@@ -55,21 +62,38 @@ function apppresser_html_inserter_options_page() {
 	<form method="post" action="options.php">
 		<?php settings_fields( 'appp-html-inserter-group' ); ?>
 		<?php do_settings_sections( 'appp-html-inserter-group' ); ?>
+		<h3>First Block</h3>
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row">Raw HTML Content</th>
 				<td>
-					<textarea name="html-content" rows="8" style="width: 100%"><?php echo get_option('html-content'); ?></textarea>
+					<textarea name="html-content-1" rows="8" style="width: 100%"><?php echo get_option('html-content-1'); ?></textarea>
 					<br>
 					<p><strong>Important notice:</strong> <i>Note that script tags you insert in the HTML will most likely not get executed in the app. If you want to execute any client-side javascript code, follow the <a href="https://docs.apppresser.com/article/392-custom-javascript" target="_blank">official instructions</a>.</i></p>
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row">Insert HTML after paragraph number<br>(Default: 3)</th>
-				<td><input type="number" name="insert-after-paragraph-num" value="<?php echo get_option('insert-after-paragraph-num', 3); ?>" /></td>
+				<th scope="row">Insert HTML after paragraph number (Default: 3)</th>
+				<td><input type="number" name="insert-after-paragraph-num-1" value="<?php echo get_option('insert-after-paragraph-num-1', 3); ?>" /></td>
 			</tr>
 		</table>
-		
+		<hr>
+		<h3>Second Block</h3>
+		<table class="form-table">
+			<tr valign="top">
+				<th scope="row">Raw HTML Content</th>
+				<td>
+					<textarea name="html-content-2" rows="8" style="width: 100%"><?php echo get_option('html-content-2'); ?></textarea>
+					<br>
+					<p><strong>Important notice:</strong> <i>Note that script tags you insert in the HTML will most likely not get executed in the app. If you want to execute any client-side javascript code, follow the <a href="https://docs.apppresser.com/article/392-custom-javascript" target="_blank">official instructions</a>.</i></p>
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row">Insert HTML after paragraph number (Default: 8)</th>
+				<td><input type="number" name="insert-after-paragraph-num-2" value="<?php echo get_option('insert-after-paragraph-num-2', 8); ?>" /></td>
+			</tr>
+		</table>
+		<hr>
 		<?php submit_button(); ?>
 	</form>
 </div>
