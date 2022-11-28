@@ -1,7 +1,6 @@
 <?php
 /*
 Plugin Name: AppPresser HTML Inserter
-Plugin URI:  http://diffractive.io
 Description: This plugin lets you insert arbitrary HTML in posts served in the AppPresser app
 Version:     1.0.0
 Author:      Diffractive.io
@@ -16,7 +15,7 @@ function str_replace_n_after($search, $replace, $subject, $occurrence) {
 }
 
 /* Inject HTML into Posts. */
-function insert_html_in_app_posts ( $content ) {	
+function insert_html_in_app_posts ( $content ) {
 	// only insert html if it is a wp json request for posts, note that we tried wp_is_json_request() but didn't work in the app (worked in preview)
 	// currently amp-ad tags are either wiped or not served in the app content for unknown reasons
 	if (strpos( $_SERVER['REQUEST_URI'], '/wp-json/wp/v2/posts') === 0) {
@@ -38,7 +37,7 @@ add_filter( 'the_content', 'insert_html_in_app_posts', 90000);
  * Registers a new options page: 'AppPresser Ad inserter settings page under Settings
  */
 function register_apppresser_html_inserter_option_page() {
-    add_options_page( 
+    add_options_page(
         'AppPresser HTML inserter',
         'AppPresser HTML inserter',
         'publish_pages',

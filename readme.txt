@@ -6,7 +6,7 @@ Tested up to: 6.0.3
 Stable tag: trunk
 License: MIT
 
-This plugin inserts custom html into posts that are displayed by an app created by Apppresser.
+This plugin lets you insert arbitrary HTML in posts served in the AppPresser app.
 
 == Description ==
 
