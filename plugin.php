@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: AppPresser HTML Inserter
-Description: This plugin lets you insert arbitrary HTML in posts served in the AppPresser app
+Plugin Name: AppPresser AMP Ad Injector
+Description: This plugin lets you insert Google Ad manager ads in posts served in the AppPresser app
 Version:     1.0.0
 Author:      Diffractive.io
 Author URI:  http://diffractive.io
@@ -14,15 +14,19 @@ function str_replace_n_after($search, $replace, $subject, $occurrence) {
 	return preg_replace("/^((?:.*?$search){".$occurrence."})/s", "$1$replace", $subject);
 }
 
-/* Inject HTML into Posts. */
-function insert_html_in_app_posts ( $content ) {
+function amp_ad_content($data_option) {
+	return "<amp-ad width=336 height=280 type=\"doubleclick\" data-slot=\"$data_option\" data-multi-size=\"300x250\"></amp-ad>";
+}
+
+/* Inject AMP Ad into Posts. */
+function insert_amp_ad_in_app_posts ( $content ) {
 	// only insert html if it is a wp json request for posts, note that we tried wp_is_json_request() but didn't work in the app (worked in preview)
 	// currently amp-ad tags are either wiped or not served in the app content for unknown reasons
 	if (strpos( $_SERVER['REQUEST_URI'], '/wp-json/wp/v2/posts') === 0) {
 		// insert first block
-		$content = str_replace_n_after("</p>", get_option('html-content-1', ""), $content, (int)get_option('insert-after-paragraph-num-1', 3));
+		$content = str_replace_n_after("</p>", amp_ad_content(get_option('data-slot-1', "")), $content, (int)get_option('insert-after-paragraph-num-1', 3));
 		// insert second block
-		$content = str_replace_n_after("</p>", get_option('html-content-2', ""), $content, (int)get_option('insert-after-paragraph-num-2', 8));
+		$content = str_replace_n_after("</p>", amp_ad_content(get_option('data-slot-2', "")), $content, (int)get_option('insert-after-paragraph-num-2', 8));
 		return $content;
 	} else {
 		return $content;
@@ -31,48 +35,48 @@ function insert_html_in_app_posts ( $content ) {
 
 // add this filter to the 'the_content' hook, see https://developer.wordpress.org/reference/hooks/the_content/
 // pick a larger number to ensure a later priority, to reduce possibility of tags being sanitized away by other filters
-add_filter( 'the_content', 'insert_html_in_app_posts', 90000);
+add_filter( 'the_content', 'insert_amp_ad_in_app_posts', 90000);
 
 /**
  * Registers a new options page: 'AppPresser Ad inserter settings page under Settings
  */
-function register_apppresser_html_inserter_option_page() {
+function register_apppresser_amp_ad_inserter_option_page() {
     add_options_page(
-        'AppPresser HTML inserter',
-        'AppPresser HTML inserter',
+        'AppPresser AMP Ad Injector',
+        'AppPresser AMP Ad Injector',
         'publish_pages',
-        'apppresser-html-inserter',
-        'apppresser_html_inserter_options_page',
+        'apppresser-amp-ad-inserter',
+        'apppresser_amp_ad_inserter_options_page',
         999
     );
-	add_action( 'admin_init', 'register_apppresser_html_inserter_settings' );
+	add_action( 'admin_init', 'register_apppresser_amp_ad_inserter_settings' );
 }
-function register_apppresser_html_inserter_settings() {
-	register_setting('appp-html-inserter-group', 'html-content-1');
-	register_setting('appp-html-inserter-group', 'insert-after-paragraph-num-1');
+function register_apppresser_amp_ad_inserter_settings() {
+	register_setting('appp-amp-ad-inserter-group', 'data-slot-1');
+	register_setting('appp-amp-ad-inserter-group', 'insert-after-paragraph-num-1');
 
-	register_setting('appp-html-inserter-group', 'html-content-2');
-	register_setting('appp-html-inserter-group', 'insert-after-paragraph-num-2');
+	register_setting('appp-amp-ad-inserter-group', 'data-slot-2');
+	register_setting('appp-amp-ad-inserter-group', 'insert-after-paragraph-num-2');
 }
-function apppresser_html_inserter_options_page() {
+function apppresser_amp_ad_inserter_options_page() {
 ?>
 <div class="wrap">
-	<h2>AppPresser HTML inserter</h2>
+	<h2>AppPresser AMP Ad Injector</h2>
 	<form method="post" action="options.php">
-		<?php settings_fields( 'appp-html-inserter-group' ); ?>
-		<?php do_settings_sections( 'appp-html-inserter-group' ); ?>
+		<?php settings_fields( 'appp-amp-ad-inserter-group' ); ?>
+		<?php do_settings_sections( 'appp-amp-ad-inserter-group' ); ?>
 		<h3>First Block</h3>
 		<table class="form-table">
 			<tr valign="top">
-				<th scope="row">Raw HTML Content</th>
+				<th scope="row">Data Slot</th>
 				<td>
-					<textarea name="html-content-1" rows="8" style="width: 100%"><?php echo get_option('html-content-1'); ?></textarea>
+					<input type="text" name="data-slot-1" style="width: 100%"><?php echo get_option('data-slot-1'); ?></input>
 					<br>
-					<p><strong>Important notice:</strong> <i>Note that script tags you insert in the HTML will most likely not get executed in the app. If you want to execute any client-side javascript code, follow the <a href="https://docs.apppresser.com/article/392-custom-javascript" target="_blank">official instructions</a>.</i></p>
+					<p><i>Data-slot can be found in the <strong>Tags</strong> tab of an ad unit created in Ad-manager</i></p>
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row">Insert HTML after paragraph number (Default: 3)</th>
+				<th scope="row">Insert Ad after paragraph number (Default: 3)</th>
 				<td><input type="number" name="insert-after-paragraph-num-1" value="<?php echo get_option('insert-after-paragraph-num-1', 3); ?>" /></td>
 			</tr>
 		</table>
@@ -80,15 +84,15 @@ function apppresser_html_inserter_options_page() {
 		<h3>Second Block</h3>
 		<table class="form-table">
 			<tr valign="top">
-				<th scope="row">Raw HTML Content</th>
+				<th scope="row">Data Slot</th>
 				<td>
-					<textarea name="html-content-2" rows="8" style="width: 100%"><?php echo get_option('html-content-2'); ?></textarea>
+					<input type="text" name="data-slot-1" style="width: 100%"><?php echo get_option('data-slot-2'); ?></input>
 					<br>
-					<p><strong>Important notice:</strong> <i>Note that script tags you insert in the HTML will most likely not get executed in the app. If you want to execute any client-side javascript code, follow the <a href="https://docs.apppresser.com/article/392-custom-javascript" target="_blank">official instructions</a>.</i></p>
+					<p><i>Data-slot can be found in the <strong>Tags</strong> tab of an ad unit created in Ad-manager</i></p>
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row">Insert HTML after paragraph number (Default: 8)</th>
+				<th scope="row">Insert Ad after paragraph number (Default: 8)</th>
 				<td><input type="number" name="insert-after-paragraph-num-2" value="<?php echo get_option('insert-after-paragraph-num-2', 8); ?>" /></td>
 			</tr>
 		</table>
@@ -98,6 +102,6 @@ function apppresser_html_inserter_options_page() {
 </div>
 <?php
 }
-add_action( 'admin_menu', 'register_apppresser_html_inserter_option_page' );
+add_action( 'admin_menu', 'register_apppresser_amp_ad_inserter_option_page' );
 
 ?>

@@ -1,13 +1,14 @@
-## AppPresser HTML Inserter
+## AppPresser Amp Ad Injector
 
-This plugin lets you:
+This plugin injects google ad manager ads and lets you:
 
-- insert arbitrary HTML in posts served in the AppPresser app.
-- specify after which paragraph to insert the HTML content.
+- choose the specific ad unit that will be used
+- specify after which paragraph to insert the ad.
 
 **Important notice:**
 
-Note that script tags you insert in the HTML will most likely not get executed in the app. If you want to execute any client-side javascript code, follow the [official instructions](https://docs.apppresser.com/article/392-custom-javascript).
+You will need to specify the data-slot of the ad block, so you will need to generate a tag in Google Ad Manager and from the generated tag copy the `data-slot` parameter.
+The data-slot can be set on the Apppresser Amp Ad Injector under Settings on the sidebar of the admin panel.
 
 ### Installation on WordPress
 
