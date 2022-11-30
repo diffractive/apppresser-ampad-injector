@@ -13,5 +13,5 @@ The data-slot can be set on the Apppresser Amp Ad Injector under Settings on the
 ### Installation on WordPress
 
 1. Clone this repo to your local directory
-2. Zip the repo by running `zip -r apppresser-html-inserter.zip apppresser-html-inserter -x '*.git*'`
+2. Zip the repo by running `zip -r apppresser-ampad-injector.zip apppresser-ampad-injector -x '*.git*'`
 3. Upload the zip file in WordPress when you install a new Plugin

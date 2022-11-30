@@ -6,7 +6,7 @@ Version:     1.0.0
 Author:      Diffractive.io
 Author URI:  http://diffractive.io
 License:     MIT License
-License URI: https://github.com/diffractive/apppresser-html-inserter/blob/main/LICENSE.md
+License URI: https://github.com/diffractive/apppresser-ampad-injector/blob/main/LICENSE.md
 */
 
 function str_replace_n_after($search, $replace, $subject, $occurrence) {

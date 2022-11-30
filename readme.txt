@@ -1,4 +1,4 @@
-=== Apppresser HTML Inserter ===
+=== Apppresser Amp Ad Injector ===
 Contributors: guilhbr
 Tags: Apppresser, HTML
 Requires at least: 4.7
