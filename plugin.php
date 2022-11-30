@@ -70,7 +70,7 @@ function apppresser_amp_ad_inserter_options_page() {
 			<tr valign="top">
 				<th scope="row">Data Slot</th>
 				<td>
-					<input type="text" name="data-slot-1" style="width: 100%"><?php echo get_option('data-slot-1'); ?></input>
+					<input type="text" name="data-slot-1" style="width: 100%" value="<?=get_option('data-slot-1')?>" />
 					<br>
 					<p><i>Data-slot can be found in the <strong>Tags</strong> tab of an ad unit created in Ad-manager</i></p>
 				</td>
@@ -86,7 +86,7 @@ function apppresser_amp_ad_inserter_options_page() {
 			<tr valign="top">
 				<th scope="row">Data Slot</th>
 				<td>
-					<input type="text" name="data-slot-1" style="width: 100%"><?php echo get_option('data-slot-2'); ?></input>
+					<input type="text" name="data-slot-2" style="width: 100%" value="<?=get_option('data-slot-2')?>" />
 					<br>
 					<p><i>Data-slot can be found in the <strong>Tags</strong> tab of an ad unit created in Ad-manager</i></p>
 				</td>
