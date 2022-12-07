@@ -15,7 +15,7 @@ function apaai_str_replace_n_after($search, $replace, $subject, $occurrence) {
 }
 
 function apaai_amp_ad_content($data_option) {
-	return "<amp-ad width=336 height=280 type=\"doubleclick\" data-slot=\"$data_option\" data-multi-size=\"300x250\"></amp-ad>";
+	return esc_html("<amp-ad width=336 height=280 type=\"doubleclick\" data-slot=\"$data_option\" data-multi-size=\"300x250\"></amp-ad>");
 }
 
 /* Inject AMP Ad into Posts. */
@@ -70,14 +70,14 @@ function apaai_apppresser_amp_ad_inserter_options_page() {
 			<tr valign="top">
 				<th scope="row">Data Slot</th>
 				<td>
-					<input type="text" name="data-slot-1" style="width: 100%" value="<?php echo get_option('data-slot-1')?>" />
+					<input type="text" name="data-slot-1" style="width: 100%" value="<?php echo esc_html(get_option('data-slot-1')); ?>" />
 					<br>
 					<p><i>Data-slot can be found in the <strong>Tags</strong> tab of an ad unit created in Ad-manager</i></p>
 				</td>
 			</tr>
 			<tr valign="top">
 				<th scope="row">Insert Ad after paragraph number (Default: 3)</th>
-				<td><input type="number" name="insert-after-paragraph-num-1" value="<?php echo get_option('insert-after-paragraph-num-1', 3); ?>" /></td>
+				<td><input type="number" name="insert-after-paragraph-num-1" value="<?php echo esc_html(get_option('insert-after-paragraph-num-1', 3)); ?>" /></td>
 			</tr>
 		</table>
 		<hr>
@@ -86,14 +86,14 @@ function apaai_apppresser_amp_ad_inserter_options_page() {
 			<tr valign="top">
 				<th scope="row">Data Slot</th>
 				<td>
-					<input type="text" name="data-slot-2" style="width: 100%" value="<?php echo get_option('data-slot-2')?>" />
+					<input type="text" name="data-slot-2" style="width: 100%" value="<?php echo esc_html(get_option('data-slot-2')); ?>" />
 					<br>
 					<p><i>Data-slot can be found in the <strong>Tags</strong> tab of an ad unit created in Ad-manager</i></p>
 				</td>
 			</tr>
 			<tr valign="top">
 				<th scope="row">Insert Ad after paragraph number (Default: 8)</th>
-				<td><input type="number" name="insert-after-paragraph-num-2" value="<?php echo get_option('insert-after-paragraph-num-2', 8); ?>" /></td>
+				<td><input type="number" name="insert-after-paragraph-num-2" value="<?php echo esc_html(get_option('insert-after-paragraph-num-2', 8)); ?>" /></td>
 			</tr>
 		</table>
 		<hr>
