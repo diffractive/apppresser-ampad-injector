@@ -3,7 +3,7 @@ Contributors: guilhbr
 Tags: Apppresser, HTML
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable tag: trunk
+Stable tag: 1.0.0
 License: MIT
 
 This plugin lets you insert Google Ad manager ads in posts served in the AppPresser app
